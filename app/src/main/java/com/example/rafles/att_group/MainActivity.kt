@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.rafles.att_group.barcode.BarcodeActivity
 import com.example.rafles.att_group.camera.CameraAction
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -68,8 +69,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_gallery -> {
 
             }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_barcode -> {
+                startActivity(Intent(this@MainActivity, BarcodeActivity::class.java))
             }
             R.id.nav_manage -> {
 
