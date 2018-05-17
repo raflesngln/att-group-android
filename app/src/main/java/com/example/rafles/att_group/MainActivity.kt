@@ -9,11 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity
 import com.example.rafles.att_group.barcode.BarcodeActivity
 import com.example.rafles.att_group.barcode.BarcodeInputActivty
 import com.example.rafles.att_group.camera.CameraAction
 import com.example.rafles.att_group.crud_mysql.CrudMysqlActivity
+import com.example.rafles.att_group.login.MyloginActivity
 import com.example.rafles.att_group.treject.TrejectActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -24,11 +26,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -76,17 +73,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_barcode -> {
                 startActivity(Intent(this@MainActivity, BarcodeInputActivty::class.java))
             }
-            R.id.nav_manage -> {
-
-            }
             R.id.nav_treject -> {
                 startActivity(Intent(this@MainActivity, TrejectActivity::class.java))
             }
             R.id.nav_retrofit -> {
                 startActivity(Intent(this@MainActivity, RetrofitActivity::class.java))
             }
-            R.id.nav_send -> {
-
+            R.id.nav_setting -> {
+                Toast.makeText(this@MainActivity, "Menu Settings masih dalam Pengembangan !", Toast.LENGTH_LONG).show()
+            }
+            R.id.nav_about ->{
+                Toast.makeText(this@MainActivity, "Menu About masih dalam Pengembangan !", Toast.LENGTH_LONG).show()
+            }
+            R.id.nav_logout ->  {
+                startActivity(Intent(this@MainActivity, MyloginActivity::class.java))
             }
         }
 

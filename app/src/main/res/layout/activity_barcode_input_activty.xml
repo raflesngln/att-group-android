@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".barcode.BarcodeInputActivty">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/title"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="INPUT BARCODE REJECT" />
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -36,17 +52,29 @@
                 android:ems="10"
                 android:inputType="textPersonName"/>
 
-            <Button
-                android:layout_width="match_parent"
-                android:id="@+id/btnScan"
-                android:text="SCAN Barcode"
-                android:layout_height="match_parent" />
+
 
         </LinearLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_alignParentBottom="true"
+    android:gravity="right"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/colorButton"
+        android:backgroundTintMode="multiply"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+</LinearLayout>
 
 
-
-    </LinearLayout>
+    </RelativeLayout>
 
 

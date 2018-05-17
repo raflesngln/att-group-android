@@ -71,7 +71,7 @@ public class BarcodeActivity extends AppCompatActivity implements ZBarScannerVie
 //    MY functio customs
 private void confirmUpdate(final String nomor) {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle("Confirm");
+    builder.setTitle("Konfirmasi !");
     builder.setMessage("Yakin Simpan Data ini ?"+nomor);
     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
