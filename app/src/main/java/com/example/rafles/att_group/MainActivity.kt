@@ -9,8 +9,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity
 import com.example.rafles.att_group.barcode.BarcodeActivity
+import com.example.rafles.att_group.barcode.BarcodeInputActivty
 import com.example.rafles.att_group.camera.CameraAction
+import com.example.rafles.att_group.crud_mysql.CrudMysqlActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -66,17 +69,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                helloText.text = "Menu CAMERA is clicked!" +biodata
                 startActivity(Intent(this@MainActivity, CameraAction::class.java))
             }
-            R.id.nav_gallery -> {
-
+            R.id.nav_mysql -> {
+                startActivity(Intent(this@MainActivity, CrudMysqlActivity::class.java))
             }
             R.id.nav_barcode -> {
-                startActivity(Intent(this@MainActivity, BarcodeActivity::class.java))
+                startActivity(Intent(this@MainActivity, BarcodeInputActivty::class.java))
             }
             R.id.nav_manage -> {
 
             }
-            R.id.nav_share -> {
-
+            R.id.nav_retrofit -> {
+                startActivity(Intent(this@MainActivity, RetrofitActivity::class.java))
             }
             R.id.nav_send -> {
 

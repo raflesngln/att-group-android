@@ -13,9 +13,9 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Barcode" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_mysql"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Gallery" />
+            android:title="MYSQL" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
@@ -25,9 +25,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_retrofit"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Retrofit" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"

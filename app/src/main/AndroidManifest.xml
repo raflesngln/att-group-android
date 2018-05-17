@@ -36,7 +36,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".camera.CameraAction" />
-        <activity android:name=".barcode.BarcodeActivity"></activity>
+        <activity android:name=".barcode.BarcodeActivity" />
+        <activity android:name=".crud_mysql.CrudMysqlActivity" />
+        <activity android:name=".RetrofitCrud.RetrofitActivity" />
+        <activity android:name=".RetrofitCrud.TampilPegawai" />
+        <activity android:name=".RetrofitCrud.TampilSemuaPgw" />
+        <activity android:name=".barcode.BarcodeInputActivty"></activity>
     </application>
 
 </manifest>

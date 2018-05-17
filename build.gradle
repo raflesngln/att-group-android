@@ -19,7 +19,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        jcenter {
+            url "http://jcenter.bintray.com/"
+        }
+
     }
 }
 
