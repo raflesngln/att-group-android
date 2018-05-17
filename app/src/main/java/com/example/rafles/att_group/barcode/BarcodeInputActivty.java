@@ -36,8 +36,8 @@ Button btnScan;
 
 
                 Intent myIntent = new Intent(BarcodeInputActivty.this, BarcodeActivity.class);
-                myIntent.putExtra("emailku", cn35);
-                myIntent.putExtra("alamatku", cn38);
+                myIntent.putExtra("cn35", cn35);
+                myIntent.putExtra("cn38", cn38);
                 startActivity(myIntent);
 
                 Toast.makeText(BarcodeInputActivty.this, "Hello world ", Toast.LENGTH_SHORT).show();
