@@ -41,7 +41,13 @@
         <activity android:name=".RetrofitCrud.RetrofitActivity" />
         <activity android:name=".RetrofitCrud.TampilPegawai" />
         <activity android:name=".RetrofitCrud.TampilSemuaPgw" />
-        <activity android:name=".barcode.BarcodeInputActivty"></activity>
+        <activity android:name=".barcode.BarcodeInputActivty" />
+        <activity android:name=".treject.TrejectActivity" />
+        <activity android:name=".treject.TampilrejectActivity" />
+        <activity
+            android:name=".treject.DetailrejectActivity"
+            android:label="@string/title_activity_detailreject"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import com.example.rafles.att_group.barcode.BarcodeActivity
 import com.example.rafles.att_group.barcode.BarcodeInputActivty
 import com.example.rafles.att_group.camera.CameraAction
 import com.example.rafles.att_group.crud_mysql.CrudMysqlActivity
+import com.example.rafles.att_group.treject.TrejectActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -77,6 +78,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_manage -> {
 
+            }
+            R.id.nav_treject -> {
+                startActivity(Intent(this@MainActivity, TrejectActivity::class.java))
             }
             R.id.nav_retrofit -> {
                 startActivity(Intent(this@MainActivity, RetrofitActivity::class.java))
