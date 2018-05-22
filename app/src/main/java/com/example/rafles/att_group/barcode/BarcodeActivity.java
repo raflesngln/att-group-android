@@ -112,7 +112,7 @@ private void confirmUpdate(final String nomor) {
         final String cn38 = intent.getStringExtra("cn38");
         final String con = nomor;
         final String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        final String createdbyuser=(sharedPrefManager.getSPNama());
+            final String createdbyuser=(sharedPrefManager.getSPNama());
 
         class AddReject extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;

@@ -55,11 +55,11 @@ public class MyloginActivity extends AppCompatActivity {
 
         // Code berikut berfungsi untuk mengecek session, Jika session true ( sudah login )
         // maka langsung memulai MainActivity.
-//        if (sharedPrefManager.getSPSudahLogin()){
-//            startActivity(new Intent(MyloginActivity.this, MainActivity.class)
-//                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-//            finish();
-//        }
+        if (sharedPrefManager.getSPSudahLogin()){
+            startActivity(new Intent(MyloginActivity.this, MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        }
 
     }
 
@@ -108,9 +108,10 @@ public class MyloginActivity extends AppCompatActivity {
             String pas = c.getString(KonfigLogin.TAG_PAS);
             String status = c.getString(KonfigLogin.TAG_STATUS);
             Toast.makeText(MyloginActivity.this,"Berhasil,Respon dari server adalah : "+status,Toast.LENGTH_LONG).show();
+            TextView tMessage=(TextView) findViewById(R.id.tMessage);
+            tMessage.setText("");
 
-            // Jika login berhasil maka data nama yang ada di response API
-            // akan diparsing ke activity selanjutnya.
+            // Jika login berhasil maka data nama yang ada di response API akan diparsing ke activity selanjutnya.
             sharedPrefManager.saveSPString(SharedPrefManager.SP_NAMA, usr);
             // Shared Pref ini berfungsi untuk menjadi trigger session login
             sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, true);
@@ -120,7 +121,9 @@ public class MyloginActivity extends AppCompatActivity {
 //            startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(MyloginActivity.this,"Username & Password is Wrong !",Toast.LENGTH_LONG).show();
+            TextView tMessage=(TextView) findViewById(R.id.tMessage);
+            tMessage.setText("Username & Password is Wrong !");
+//            Toast.makeText(MyloginActivity.this,"Username & Password is Wrong !",Toast.LENGTH_LONG).show();
         }
 
     }

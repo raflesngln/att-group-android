@@ -26,11 +26,14 @@
             android:orientation="vertical"
             android:layout_below="@+id/title"
             android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:text="CN35"
+                android:paddingLeft="8dp"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -38,11 +41,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:paddingLeft="8dp"
                 android:inputType="textPersonName"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:text="CN38"
+                android:paddingLeft="8dp"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -50,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:paddingLeft="8dp"
                 android:inputType="textPersonName"/>
 
         </LinearLayout>

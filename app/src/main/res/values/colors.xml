@@ -6,5 +6,6 @@
     <color name="colorButton">#ca044d</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorUngu">#6217da</color>
+    <color name="colorWarning">#ffac05</color>
 
 </resources>

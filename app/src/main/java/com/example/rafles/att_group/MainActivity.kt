@@ -1,15 +1,18 @@
 package com.example.rafles.att_group
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity
@@ -55,11 +58,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+//        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+//            drawer_layout.closeDrawer(GravityCompat.START)
+//        } else {
+//            super.onBackPressed()
+//        }
+
+        showNewNameDialog()
+    }
+    fun showNewNameDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.custom_dialog, null)
+        dialogBuilder.setView(dialogView)
+
+        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
+
+        dialogBuilder.setTitle("Confirm !")
+        dialogBuilder.setMessage("Are You Sure Exit ?")
+        dialogBuilder.setPositiveButton("OKE", DialogInterface.OnClickListener { dialog, whichButton ->
+            //do something with edt.getText().toString();
+            // Handler code here.
+            Toast.makeText(this@MainActivity, "Back presssed and save !", Toast.LENGTH_LONG).show()
+            finishAffinity()
+        })
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
+            //pass
+        })
+        val b = dialogBuilder.create()
+        b.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
