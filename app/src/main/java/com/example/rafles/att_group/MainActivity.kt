@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity
 import com.example.rafles.att_group.barcode.BarcodeActivity
@@ -19,12 +21,27 @@ import com.example.rafles.att_group.login.MyloginActivity
 import com.example.rafles.att_group.treject.TrejectActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import com.example.rafles.att_group.login.LoginActivity
+import com.example.rafles.att_group.login.SharedPrefManager
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    var sharedPrefManager: SharedPrefManager? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPrefManager = SharedPrefManager(this)
+        val userlogin = sharedPrefManager!!.getSPNama()
+
+        //This for title user in nav header
+        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        val navUsername = headerView.findViewById(R.id.nav_title_user) as TextView
+        navUsername.text = userlogin
+
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
@@ -33,6 +50,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+
     }
 
     override fun onBackPressed() {
@@ -83,10 +102,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this@MainActivity, "Menu Settings masih dalam Pengembangan !", Toast.LENGTH_LONG).show()
             }
             R.id.nav_about ->{
-                Toast.makeText(this@MainActivity, "Menu About masih dalam Pengembangan !", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "This application is use for barcoding reject house !", Toast.LENGTH_LONG).show()
             }
             R.id.nav_logout ->  {
-                startActivity(Intent(this@MainActivity, MyloginActivity::class.java))
+//                startActivity(Intent(this@MainActivity, MyloginActivity::class.java))
+                sharedPrefManager!!.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, false)
+                startActivity(Intent(this@MainActivity, MyloginActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish()
             }
         }
 

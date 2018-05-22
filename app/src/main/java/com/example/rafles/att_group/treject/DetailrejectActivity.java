@@ -30,6 +30,7 @@ public class DetailrejectActivity extends AppCompatActivity implements View.OnCl
     private EditText CN35;
     private EditText CN38;
     private  EditText datecreate;
+    private  EditText createdby;
 
     private Button buttonUpdate;
     private Button buttonDelete;
@@ -107,11 +108,13 @@ public class DetailrejectActivity extends AppCompatActivity implements View.OnCl
             String cn5 = c.getString(KonfigTreject.TAG_CN35);
             String cn8 = c.getString(KonfigTreject.TAG_CN38);
             String datecr = c.getString(KonfigTreject.TAG_DATECREATE);
+            String createuser = c.getString(KonfigTreject.TAG_CREATEDBY);
 
             connote.setText(con);
             CN35.setText(cn5);
             CN38.setText(cn8);
             datecreate.setText(datecr);
+            createdby.setText(createuser);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,6 +127,7 @@ public class DetailrejectActivity extends AppCompatActivity implements View.OnCl
         final String cn5 = CN35.getText().toString().trim();
         final String cn8 = CN38.getText().toString().trim();
         final String datecr = datecreate.getText().toString().trim();
+        final String createuser = createdby.getText().toString().trim();
 
         class updateReject extends AsyncTask<Void,Void,String>{
             ProgressDialog loading;
@@ -148,6 +152,7 @@ public class DetailrejectActivity extends AppCompatActivity implements View.OnCl
                 hashMap.put(KonfigTreject.KEY_EMP_CN35,cn5);
                 hashMap.put(KonfigTreject.KEY_EMP_CN38,cn8);
                 hashMap.put(KonfigTreject.KEY_EMP_DATECREATE,datecr);
+                hashMap.put(KonfigTreject.KEY_EMP_CREATEDBY,createuser);
 
                 RequestHandler rh = new RequestHandler();
 

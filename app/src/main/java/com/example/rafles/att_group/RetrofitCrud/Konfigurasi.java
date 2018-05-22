@@ -18,9 +18,9 @@ public class Konfigurasi {
     //Dibawah ini merupakan Kunci yang akan digunakan untuk mengirim permintaan ke Skrip PHP
     public static final String KEY_EMP_ID = "id";
     public static final String KEY_EMP_NAMA = "name";
-    public static final String KEY_EMP_ALAMAT = "alamat"; //alamat itu variabel untuk posisi
-    public static final String KEY_EMP_ADDRESS = "address"; //alamat itu variabel untuk posisi
-    public static final String KEY_EMP_JABATAN = "jabatan"; //jabatan itu variabel untuk gajih
+    public static final String KEY_EMP_ALAMAT = "alamat";
+    public static final String KEY_EMP_ADDRESS = "address";
+    public static final String KEY_EMP_JABATAN = "jabatan";
 
     //JSON Tags
     public static final String TAG_JSON_ARRAY="result";

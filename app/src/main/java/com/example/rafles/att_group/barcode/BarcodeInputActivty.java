@@ -19,11 +19,10 @@ import com.example.rafles.att_group.R;
 import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity;
 import com.example.rafles.att_group.RetrofitCrud.TampilPegawai;
 import com.example.rafles.att_group.camera.CameraAction;
+import com.example.rafles.att_group.login.SharedPrefManager;
 
 public class BarcodeInputActivty extends AppCompatActivity {
-
     private final int CAMERA_RESULT=101;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

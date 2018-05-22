@@ -54,6 +54,14 @@ android:paddingBottom="16dp" tools:context=".treject.DetailrejectActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/datecreate" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="createdby" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/createdby" />
 
 <Button
     android:layout_width="match_parent"

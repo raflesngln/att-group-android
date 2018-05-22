@@ -58,11 +58,6 @@ public class TampilPegawai extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getEmployee();
     }
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-        return true;
-    }
 
     private void getEmployee(){
         class GetEmployee extends AsyncTask<Void,Void,String> {
@@ -127,7 +122,7 @@ public class TampilPegawai extends AppCompatActivity implements View.OnClickList
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                Toast.makeText(TampilPegawai.this,s,Toast.LENGTH_LONG).show();
+                Toast.makeText(TampilPegawai.this,"Respon dari server adalah : "+s,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -213,5 +208,12 @@ public class TampilPegawai extends AppCompatActivity implements View.OnClickList
         if(v == buttonDelete){
             confirmDeleteEmployee();
         }
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

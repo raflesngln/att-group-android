@@ -20,6 +20,7 @@ public class KonfigTreject {
     public static final String KEY_EMP_CN35 = "CN35";
     public static final String KEY_EMP_CN38 = "CN38";
     public static final String KEY_EMP_DATECREATE = "datecreate";
+    public static final String KEY_EMP_CREATEDBY = "createdby";
 
     //JSON Tags
     public static final String TAG_JSON_ARRAY="result";
@@ -28,6 +29,7 @@ public class KonfigTreject {
     public static final String TAG_CN35 = "CN35";
     public static final String TAG_CN38 = "CN38";
     public static final String TAG_DATECREATE = "datecreate";
+    public static final String TAG_CREATEDBY = "createdby";
 
     //ID karyawan
     //emp itu singkatan dari Employee

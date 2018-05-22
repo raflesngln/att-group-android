@@ -52,8 +52,6 @@
                 android:ems="10"
                 android:inputType="textPersonName"/>
 
-
-
         </LinearLayout>
 
 <LinearLayout

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.rafles.att_group.R;
 import com.example.rafles.att_group.RetrofitCrud.Konfigurasi;
 import com.example.rafles.att_group.RetrofitCrud.RequestHandler;
+import com.example.rafles.att_group.login.SharedPrefManager;
 import com.example.rafles.att_group.treject.KonfigTreject;
 import com.example.rafles.att_group.treject.TrejectActivity;
 
@@ -29,11 +30,17 @@ import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 public class BarcodeActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler{
+    SharedPrefManager sharedPrefManager;
+//    final String createdbyuser = "";
     private ZBarScannerView mScannerView;
+
+    public BarcodeActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 //        setContentView(R.layout.activity_barcode);
         mScannerView = new ZBarScannerView(this);    // Programmatically initialize the scanner view
         setContentView(mScannerView);
@@ -98,15 +105,14 @@ private void confirmUpdate(final String nomor) {
 
     //Dibawah ini merupakan perintah untuk menambahkan data di cdb cloud
     private void AddReject(final String nomor) {
+        sharedPrefManager = new SharedPrefManager(this);
         Intent intent = getIntent();
         final String id = nomor;
         final String cn35 = intent.getStringExtra("cn35");
         final String cn38 = intent.getStringExtra("cn38");
         final String con = nomor;
-
-
-
         final String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        final String createdbyuser=(sharedPrefManager.getSPNama());
 
         class AddReject extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;
@@ -148,7 +154,9 @@ private void confirmUpdate(final String nomor) {
                 params.put(KonfigTreject.KEY_EMP_CONNOTE, con);
                 params.put(KonfigTreject.KEY_EMP_CN35, cn35);
                 params.put(KonfigTreject.KEY_EMP_CN38, cn38);
+                params.put(KonfigTreject.KEY_EMP_CN38, cn38);
                 params.put(KonfigTreject.KEY_EMP_DATECREATE, currentDateandTime);
+                params.put(KonfigTreject.KEY_EMP_CREATEDBY, createdbyuser);
 
                 RequestHandler rh = new RequestHandler();
                 String res = rh.sendPostRequest(KonfigTreject.URL_ADD, params);
