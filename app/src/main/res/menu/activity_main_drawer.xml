@@ -17,12 +17,16 @@
         <item
             android:id="@+id/nav_mysql"
             android:visible="false"
-            android:icon="@drawable/ic_cast_off_light"
+            android:icon="@drawable/ic_menu_camera"
             android:title="MYSQL" />
         <item
             android:id="@+id/nav_treject"
-            android:icon="@drawable/ic_cast_off_light"
+            android:icon="@drawable/ic_menu_camera"
             android:title="Reject" />
+        <item
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="API Maps" />
     </group>
 
     <item android:title="Settings">
@@ -36,6 +40,10 @@
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Settings" />
+            <item
+                android:id="@+id/nav_firebase"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Firebase" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_info_outline"

@@ -1,5 +1,7 @@
 package com.example.rafles.att_group
 
+import android.app.Fragment
+import android.app.FragmentManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -15,10 +17,14 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.rafles.att_group.ApiMaps.MapsActivity
+
+import com.example.rafles.att_group.MyFragment.OneFragment
 import com.example.rafles.att_group.RetrofitCrud.RetrofitActivity
 import com.example.rafles.att_group.barcode.BarcodeActivity
 import com.example.rafles.att_group.barcode.BarcodeInputActivty
 import com.example.rafles.att_group.camera.CameraAction
+import com.example.rafles.att_group.crud_firebase.CrudFirebaseActivity
 import com.example.rafles.att_group.crud_mysql.CrudMysqlActivity
 import com.example.rafles.att_group.login.MyloginActivity
 import com.example.rafles.att_group.treject.TrejectActivity
@@ -51,38 +57,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
         nav_view.setNavigationItemSelectedListener(this)
 
-
+        //Call Fragment
+        val fragManager = getSupportFragmentManager()
+        fragManager.beginTransaction()
+                .add(R.id.frame_content, OneFragment())
+                .addToBackStack("fragment")
+                .commit()
+//        supportActionBar!!.setTitle("Fragment One")
     }
 
-    override fun onBackPressed() {
-//        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-//            drawer_layout.closeDrawer(GravityCompat.START)
-//        } else {
-//            super.onBackPressed()
-//        }
-
-        showNewNameDialog()
-    }
-    fun showNewNameDialog() {
+    fun showDialoExit() {
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.custom_dialog, null)
         dialogBuilder.setView(dialogView)
-
-        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
-
+//        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
         dialogBuilder.setTitle("Confirm !")
         dialogBuilder.setMessage("Are You Sure Exit ?")
-        dialogBuilder.setPositiveButton("OKE", DialogInterface.OnClickListener { dialog, whichButton ->
+        dialogBuilder.setPositiveButton("OKE", DialogInterface.OnClickListener { _, _ ->
             //do something with edt.getText().toString();
             // Handler code here.
             Toast.makeText(this@MainActivity, "Back presssed and save !", Toast.LENGTH_LONG).show()
             finishAffinity()
         })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, whichButton ->
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
             //pass
         })
         val b = dialogBuilder.create()
@@ -122,11 +122,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_treject -> {
                 startActivity(Intent(this@MainActivity, TrejectActivity::class.java))
             }
+            R.id.nav_maps -> {
+                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+            }
             R.id.nav_retrofit -> {
                 startActivity(Intent(this@MainActivity, RetrofitActivity::class.java))
             }
             R.id.nav_setting -> {
                 Toast.makeText(this@MainActivity, "Menu Settings masih dalam Pengembangan !", Toast.LENGTH_LONG).show()
+            }
+            R.id.nav_firebase -> {
+                startActivity(Intent(this@MainActivity, CrudFirebaseActivity::class.java))
             }
             R.id.nav_about ->{
                 Toast.makeText(this@MainActivity, "This application is use for barcoding reject house !", Toast.LENGTH_LONG).show()
@@ -143,4 +149,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+//        showDialoExit();
+        }
+    }
+
+
 }

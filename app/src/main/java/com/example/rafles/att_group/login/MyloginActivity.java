@@ -1,13 +1,17 @@
 package com.example.rafles.att_group.login;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,6 +63,22 @@ public class MyloginActivity extends AppCompatActivity {
             startActivity(new Intent(MyloginActivity.this, MainActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             finish();
+        }
+
+        //untuk manage toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarlogin);
+        setSupportActionBar(toolbar);// set toolbar ke dalam support action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// enable home button untuk navigasi
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_icon_apps_round);// set icon home button Toolbar
+        getSupportActionBar().setTitle("  LOGIN USER");// set title/nama aplikasi
+        getSupportActionBar().setDisplayUseLogoEnabled(true);// set logo toolbar
+        getSupportActionBar().setLogo(R.drawable.quantum_ic_forward_30_white_24);
+        //changing statusbar color
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorButton));
         }
 
     }

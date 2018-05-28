@@ -1,133 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:background="@drawable/bg_login"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:id="@+id/my_toolbar"
-    style="@style/HeaderBar"
-    android:theme="@style/AppTheme.PopupOverlay"
-    app:popupTheme="@style/AppTheme.NoActionBar"
     tools:context=".login.MyloginActivity">
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:id="@+id/tjudul"
-        android:layout_marginTop="70dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="LOGIN FORM"
-            android:textColor="@color/colorWhite"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:id="@+id/labelMessage"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="3dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:text=""
-            android:id="@+id/tMessage"
-            android:textColor="@color/colorWarning"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-<!-- Login progress -->
-<ProgressBar
-    android:id="@+id/login_progress"
-    style="?android:attr/progressBarStyleLarge"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:visibility="gone" />
-
-<ScrollView
-    android:id="@+id/login_form"
+<android.support.v7.widget.Toolbar
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/toolbarlogin"
+    app:titleTextColor="@color/colorWhite"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/AppTheme.NoActionBar"
+    app:popupTheme="@style/AppTheme.PopupOverlay">
+</android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/email_login_form"
+    //Others componment in layout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:orientation="vertical">
+        android:layout_marginTop="90dp"
+        android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            android:textColorHint="@color/colorWhite"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text=""
+                android:layout_marginBottom="20dp"
+                android:id="@+id/tMessage"
+                android:textColor="@color/colorWarning"
+                android:layout_height="wrap_content" />
+            <!-- Login progress -->
+            <ProgressBar
+                android:id="@+id/login_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
 
-            <AutoCompleteTextView
-                android:id="@+id/txtUsername"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="@string/promptusername"
-                android:inputType="textAutoComplete"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="#80FFFFFF"
-                android:background="@drawable/bg_rectangle_edittext"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                android:textColorHint="@color/colorWhite"
+                android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            android:textColorHint="@color/colorWhite"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content">
+                <AutoCompleteTextView
+                    android:id="@+id/txtUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="@string/promptusername"
+                    android:inputType="textAutoComplete"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="#80FFFFFF"
+                    android:background="@drawable/bg_rectangle_edittext"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/txtpassword"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="@string/prompt_password"
-                android:imeActionId="6"
-                android:paddingLeft="5dp"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                android:textColorHint="@color/colorWhite"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="6"
+                    android:paddingLeft="5dp"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="#80FFFFFF"
+                    android:background="@drawable/bg_rectangle_edittext"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnLogin"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="16dp"
+                android:text="LOGIN"
+                android:textSize="16dp"
                 android:textColor="@color/colorWhite"
-                android:textColorHint="#80FFFFFF"
-                android:background="@drawable/bg_rectangle_edittext"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:background="@drawable/bg_rectangle_button"
+                android:textStyle="bold" />
 
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnLogin"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="16dp"
-            android:text="LOGIN"
-            android:textSize="16dp"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/bg_rectangle_button"
-            android:textStyle="bold" />
+    </ScrollView>
 
-    </LinearLayout>
-</ScrollView>
-</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

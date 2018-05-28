@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -38,8 +39,9 @@ public class TampilrejectActivity extends AppCompatActivity implements ListView.
         setContentView(R.layout.activity_tampilreject);
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getJSON();
+
+
+        getData();
     }
     @Override
     public boolean onSupportNavigateUp(){
@@ -81,8 +83,8 @@ public class TampilrejectActivity extends AppCompatActivity implements ListView.
         listView.setAdapter(adapter);
     }
 
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
+    private void getData(){
+        class getData extends AsyncTask<Void,Void,String> {
 
             ProgressDialog loading;
             @Override
@@ -106,7 +108,7 @@ public class TampilrejectActivity extends AppCompatActivity implements ListView.
                 return s;
             }
         }
-        GetJSON gj = new GetJSON();
+        getData gj = new getData();
         gj.execute();
     }
 

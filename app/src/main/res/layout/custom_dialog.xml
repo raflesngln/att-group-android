@@ -5,11 +5,14 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/editTextName"
+    <!--<EditText-->
+        <!--android:id="@+id/editTextName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:inputType="text" />-->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:text="Confirmation!"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
