@@ -83,7 +83,9 @@
             android:name=".ApiMaps.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".crud_firebase.CrudFirebaseActivity" />
-        <activity android:name=".crud_firebase.CreateUserFirebaseActivity"></activity>
+        <activity android:name=".crud_firebase.CreateUserFirebaseActivity" />
+        <activity android:name=".crud_firebase.ReadUsersActivity" />
+        <activity android:name=".recyclerview_data.RecyclerMainActivity"></activity>
     </application>
 
 </manifest>

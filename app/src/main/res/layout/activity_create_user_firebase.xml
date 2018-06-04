@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
+        android:layout_margin="10dp"
         android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID User"
-            android:inputType="text" />
+            android:inputType="number" />
         <EditText
             android:id="@+id/t_username"
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:hint="password"
             android:inputType="text" />
+
         <EditText
             android:id="@+id/t_fullname"
             android:layout_width="match_parent"
@@ -59,8 +61,21 @@
         <Button
             android:id="@+id/bt_submit"
             android:layout_width="match_parent"
+            android:height="40dp"
+            android:background="@drawable/bg_login"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="Save1" />
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="match_parent"
+            android:background="@drawable/bg_login"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="20dp"
+            android:height="40dp"
+            android:layout_height="wrap_content"
+            android:text="Save2" />
     </LinearLayout>
 
 

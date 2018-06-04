@@ -1,5 +1,6 @@
 package com.example.rafles.att_group.crud_firebase;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +32,8 @@ public class CrudFirebaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //code for view
+                Intent intent = new Intent(CrudFirebaseActivity.this, ReadUsersActivity.class);
+                startActivity(intent);
             }
         });
 

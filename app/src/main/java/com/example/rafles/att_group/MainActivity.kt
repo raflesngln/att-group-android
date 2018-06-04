@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import com.example.rafles.att_group.login.LoginActivity
 import com.example.rafles.att_group.login.SharedPrefManager
-
+import com.example.rafles.att_group.recyclerview_data.RecyclerMainActivity
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -133,6 +133,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_firebase -> {
                 startActivity(Intent(this@MainActivity, CrudFirebaseActivity::class.java))
+            }
+            R.id.nav_recycler -> {
+                startActivity(Intent(this@MainActivity, RecyclerMainActivity::class.java))
             }
             R.id.nav_about ->{
                 Toast.makeText(this@MainActivity, "This application is use for barcoding reject house !", Toast.LENGTH_LONG).show()
