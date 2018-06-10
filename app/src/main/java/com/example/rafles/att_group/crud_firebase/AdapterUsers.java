@@ -24,18 +24,17 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
 
     private ArrayList<Usermodel> daftarUsers;
     private Context context;
-    ReadUsersActivity listener; //for refresh after delete
+    ReadUsersActivity listener; //mengambil listener dari class readuseracyivity krna class ini tdk manggil
 
     public AdapterUsers(ArrayList<Usermodel> d_users, Context ctx) {
         daftarUsers = d_users;
         context = ctx;
-        listener = (ReadUsersActivity) ctx;
+        listener = (ReadUsersActivity) ctx;//mengambil listener dari class readuseracyivity krna class ini tdk manggil
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // di tutorial ini kita hanya menggunakan data String untuk tiap item
-        public TextView tvTitle;
-        public TextView tvSubtitle;
+        public TextView tvTitle,tv_phone,tvSubtitle;
         public  RelativeLayout headerlist;
 //        private ImageView gambar;
 
@@ -44,6 +43,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
             //Menginisialisasi View-View untuk kita gunakan pada RecyclerView
             tvTitle = (TextView) v.findViewById(R.id.tv_title);
             tvSubtitle = (TextView) v.findViewById(R.id.tv_subtitle);
+            tv_phone = (TextView) v.findViewById(R.id.tv_phone);
             headerlist=(RelativeLayout) v.findViewById(R.id.headerlist);
 //            gambar = (ImageView) v.findViewById(R.id.icongambar);
         }
@@ -65,6 +65,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
         // - mengeset isi view dengan elemen dari dataset tersebut
         final String name = daftarUsers.get(position).getUsername();
         holder.tvTitle.setText(name);
+        holder.tv_phone.setText(daftarUsers.get(position).getPhone());
         holder.tvSubtitle.setText("index  " + position);
 
         //Membuat Aksi Saat Judul Pada List ditekan
@@ -124,7 +125,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
     }
 
     public interface FirebaseDataListener{
-        void onDeleteData(Usermodel users, int position);
+//        void onDeleteData(Usermodel users, int position);
     }
 
 }

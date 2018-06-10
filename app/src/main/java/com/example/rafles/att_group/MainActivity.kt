@@ -1,5 +1,6 @@
 package com.example.rafles.att_group
 
+import android.app.Activity
 import android.app.Fragment
 import android.app.FragmentManager
 import android.content.DialogInterface
@@ -17,6 +18,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.rafles.att_group.ApiMaps.ListOnline
+import com.example.rafles.att_group.ApiMaps.LoginFirebaseActivity
 import com.example.rafles.att_group.ApiMaps.MapsActivity
 
 import com.example.rafles.att_group.MyFragment.OneFragment
@@ -33,11 +36,12 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import com.example.rafles.att_group.login.LoginActivity
 import com.example.rafles.att_group.login.SharedPrefManager
 import com.example.rafles.att_group.recyclerview_data.RecyclerMainActivity
+import com.firebase.ui.auth.AuthUI
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var sharedPrefManager: SharedPrefManager? = null
-
+    private val LOGIN_PERMISSION = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +127,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this@MainActivity, TrejectActivity::class.java))
             }
             R.id.nav_maps -> {
-                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAllowNewEmailAccounts(true).build(), LOGIN_PERMISSION)
+
+//                startActivity(Intent(this@MainActivity, LoginFirebaseActivity::class.java))
             }
             R.id.nav_retrofit -> {
                 startActivity(Intent(this@MainActivity, RetrofitActivity::class.java))
@@ -162,5 +168,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == LOGIN_PERMISSION) {
+            startNewActivity(resultCode, data)
+        }
+    }
+
+    private fun startNewActivity(resultCode: Int, data: Intent) {
+        if (resultCode == Activity.RESULT_OK) {
+            val intent = Intent(this@MainActivity, ListOnline::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this@MainActivity, "Login falsess", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -46,12 +47,13 @@ public class ReadUsersActivity extends AppCompatActivity {
         rvView.setLayoutManager(layoutManager);
 
         /**Inisialisasi dan mengambil Firebase Database Reference*/
-        database = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference("users");
 
         /**Mengambil data barang dari Firebase Realtime DB*/
         final ProgressDialog loading;
         loading = ProgressDialog.show(ReadUsersActivity.this,"Mengambil Data","Mohon Tunggu...",false,false);
-        database.child("users").addValueEventListener(new ValueEventListener() {
+        Query myquery=database.orderByKey();
+        myquery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /**Saat ada data baru, masukkan datanya ke ArrayList*/
@@ -93,7 +95,7 @@ public class ReadUsersActivity extends AppCompatActivity {
          * Jika sukses akan memunculkan SnackBar
          */
         if(database!=null){
-            database.child("users").child(d_users.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            database.child(d_users.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(ReadUsersActivity.this,"success delete", Toast.LENGTH_LONG).show();

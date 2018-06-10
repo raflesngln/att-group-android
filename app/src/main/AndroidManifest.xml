@@ -85,7 +85,12 @@
         <activity android:name=".crud_firebase.CrudFirebaseActivity" />
         <activity android:name=".crud_firebase.CreateUserFirebaseActivity" />
         <activity android:name=".crud_firebase.ReadUsersActivity" />
-        <activity android:name=".recyclerview_data.RecyclerMainActivity"></activity>
+        <activity android:name=".recyclerview_data.RecyclerMainActivity" />
+        <activity android:name=".ApiMaps.LoginFirebaseActivity" />
+        <activity android:name=".ApiMaps.ListOnline" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ApiMaps.MapTracking"
+            android:label="@string/title_activity_map_tracking"></activity>
     </application>
 
 </manifest>

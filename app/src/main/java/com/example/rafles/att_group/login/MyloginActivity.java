@@ -72,7 +72,7 @@ public class MyloginActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_icon_apps_round);// set icon home button Toolbar
         getSupportActionBar().setTitle("  LOGIN USER");// set title/nama aplikasi
         getSupportActionBar().setDisplayUseLogoEnabled(true);// set logo toolbar
-        getSupportActionBar().setLogo(R.drawable.quantum_ic_forward_30_white_24);
+        getSupportActionBar().setLogo(R.drawable.powered_by_google_light);
         //changing statusbar color
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
