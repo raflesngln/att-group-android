@@ -90,7 +90,7 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback 
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 //                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),12.0f));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(friendLocation));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((friendLocation), 10.0f));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((friendLocation), 12.0f));
 
 
                 }
