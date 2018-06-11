@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_maps -> {
                 startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAllowNewEmailAccounts(true).build(), LOGIN_PERMISSION)
-
 //                startActivity(Intent(this@MainActivity, LoginFirebaseActivity::class.java))
             }
             R.id.nav_retrofit -> {
@@ -181,7 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
             finish()
         } else {
-            Toast.makeText(this@MainActivity, "Login falsess", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "Login falset", Toast.LENGTH_SHORT).show()
         }
     }
 

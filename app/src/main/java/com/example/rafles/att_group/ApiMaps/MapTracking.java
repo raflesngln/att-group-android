@@ -1,10 +1,25 @@
 package com.example.rafles.att_group.ApiMaps;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rafles.att_group.R;
@@ -14,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,12 +40,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
-public class MapTracking extends FragmentActivity implements OnMapReadyCallback {
+public class MapTracking extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private String email;
     DatabaseReference dbuserlist;
     Double lat,lng;
+    Marker myMarker;
+    TextView txt_search;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +72,38 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback 
         }
 //        if(!TextUtils.isEmpty(email))
 //            loadLocationForThisUser(email);
-//        Toast.makeText(this, "alamat "+lat+"dan"+lng, Toast.LENGTH_SHORT).show();
+        //for dialog searching
+        txt_search=(TextView) findViewById(R.id.txt_search);
+        txt_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog customDialog = new Dialog(MapTracking.this);
+                // the setContentView() method is used to set the custom layout for the dialog
+                customDialog.setContentView(R.layout.dialog_search_maps);
+
+                // using window set the hight and width of custom dialog
+                Window window = customDialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                customDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                customDialog.show();// this show() method is used to show custom dialog
+
+
+                Button bt_submit = (Button) customDialog.findViewById(R.id.bt_submit);
+                bt_submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MapTracking.this, "Searching data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        ImageView gotoCurrent=(ImageView) findViewById(R.id.gotoCurrent);
+        gotoCurrent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadLocationForThisUser(email);
+            }
+        });
         
     }
 
@@ -82,35 +132,35 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback 
                     //function calculate distancebettwen location
                     distance(currentUser,friendsLatLng);
 
-                    //add other marker on the map
-                    mMap.addMarker(new MarkerOptions()
-                                    .position(friendLocation)
-                                    .title("- "+tracking.getEmail())
-//                                    .snippet("distance"+new DecimalFormat("#.#").format((currentUser.distanceTo(friendsLatLng)) / 1000+"KM"))
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),12.0f));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(friendLocation));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((friendLocation), 12.0f));
 
+                    //add other marker on the map,if not same on current user then created marker
+                    LatLng lokasi_user=new LatLng(lat,lng);
+                    if (!lokasi_user.equals(friendLocation))
+                    {
+                        mMap.addMarker(new MarkerOptions()
+                                .position(friendLocation)
+                                .title("- " + tracking.getEmail())
+                                .snippet("This is Driver")
+//                                    .snippet("distance"+ new DecimalFormat("#.#").format((currentUser.distanceTo(friendsLatLng)) / 1000+"KM"))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),12.0f));
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLng(friendLocation));
+//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((friendLocation), 12.0f));
+                    }
 
                 }
 
 //                //create marker for current user
                 LatLng lokasi=new LatLng(lat,lng);
 //                mMap.addMarker(new MarkerOptions().position(current).title(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-//
-
-//                lat=getIntent().getDoubleExtra("lat",0);
-//                lng=getIntent().getDoubleExtra("lng",0);
-//                LatLng lokasi = new LatLng(lat, lng);
                 mMap.addMarker(new MarkerOptions()
                         .position(lokasi)
-                        .title( "Me "+FirebaseAuth.getInstance().getCurrentUser().getEmail()+"dan"+lng)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 15.0f));
-
-
+                        .title( "My Current Location ")
+                        .snippet(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 12.0f));
+                Toast.makeText(MapTracking.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -155,16 +205,34 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear();
+        mMap.setTrafficEnabled(true);
         loadLocationForThisUser(email);
 
-//         Add a marker in Sydney and move the camera
-//        email=getIntent().getStringExtra("email");
-//        lat=getIntent().getDoubleExtra("lat",0);
-//        lng=getIntent().getDoubleExtra("lng",0);
-//
 //        LatLng lokasi = new LatLng(lat, lng);
 //        mMap.addMarker(new MarkerOptions().position(lokasi).title( "posisi"+lat+"dan"+lng));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 15.0f));
+    }
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent myIntent = new Intent(MapTracking.this, ListOnline.class);
+        startActivity(myIntent);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String title = marker.getTitle();
+        if ("User".equals(title)) {
+            Toast.makeText(this, "hai"+title, Toast.LENGTH_SHORT).show();
+        } else if ("Event".equals(title)) {
+            // do thing for events
+            Toast.makeText(this, "nooo", Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
 }

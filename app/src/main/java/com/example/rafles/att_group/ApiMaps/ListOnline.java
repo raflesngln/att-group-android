@@ -140,7 +140,8 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
                             String.valueOf(mLastLocation.getLongitude())));
             Toast.makeText(this, "Save new location longitude "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this,"No Location detected",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,"No Location detected",Toast.LENGTH_SHORT).show();
         }
 
     }

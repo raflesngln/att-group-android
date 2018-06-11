@@ -89,8 +89,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
                 Button delButton = (Button) dialog.findViewById(R.id.bt_delete_data);
 
                 //if tombol edit klik
-                editButton.setOnClickListener(
-                        new View.OnClickListener() {
+                editButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
@@ -99,8 +98,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.ViewHolder> 
                         }
                 );
                 //if tombol delete klik
-                delButton.setOnClickListener(
-                        new View.OnClickListener() {
+                delButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
