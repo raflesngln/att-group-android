@@ -1,0 +1,74 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ApiMaps.MapsCoba" >
+
+<fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:scrollbars="vertical"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    class="com.google.android.gms.maps.SupportMapFragment"/>
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:background="@drawable/background_radius"
+    android:layout_gravity="fill_vertical"
+    android:layout_margin="8dp"
+    android:padding="6dp"
+    android:paddingLeft="12dp"
+    android:layout_marginTop="30dp"
+    android:layout_height="100dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Tracking Locationcoba"
+        android:textSize="14dp"
+        android:id="@+id/jdl"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="9dp"
+        android:layout_below="@+id/jdl"
+        android:background="@color/colorAbu"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/jdl"
+        android:id="@+id/txt_search"
+        android:paddingTop="16dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="8dp"
+        android:hint="Search user or Location ?"
+        android:height="60dp"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_search"
+        android:background="@color/colorAbu"/>
+
+
+
+</RelativeLayout>
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/gotoCurrent"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_my_location" />
+</RelativeLayout>
+</FrameLayout>

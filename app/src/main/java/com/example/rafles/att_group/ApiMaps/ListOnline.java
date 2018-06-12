@@ -20,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.rafles.att_group.R;
@@ -38,9 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ListOnline extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+public class ListOnline extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
     //firebase
     DatabaseReference onlineRef,currentUserRef,counterRef,locations;
     FirebaseRecyclerAdapter<User,ListOnlineViewHolder> adapter;
@@ -56,7 +56,7 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
 
     private static int UPDATE_INTERVAL=5000;
     private static int FASTEST_INTERVAL=3000;
-    private static int DISTANCE=10;
+    private static int DISTANCE=5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,13 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolBar);
         toolbar.setTitle("Tracking Maps");
         setSupportActionBar(toolbar);
+                //changing statusbar color
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorButton));
+        }
 
         //firebase
         locations=FirebaseDatabase.getInstance().getReference("Locations");
@@ -138,10 +145,9 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
                             FirebaseAuth.getInstance().getCurrentUser().getUid(),
                             String.valueOf(mLastLocation.getLatitude()),
                             String.valueOf(mLastLocation.getLongitude())));
-            Toast.makeText(this, "Save new location longitude "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Save my new location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this,"No",Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this,"No Location detected",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -199,7 +205,7 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
 //                        Toast.makeText(ListOnline.this, "Youre self no click"+mLastLocation.getLatitude(), Toast.LENGTH_SHORT).show();
                         if (!model.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                         {
-                            Intent map=new Intent(ListOnline.this,MapTracking.class);
+                            Intent map=new Intent(ListOnline.this,MapsCoba.class);
                             map.putExtra("email",model.getEmail());
                             map.putExtra("lat",mLastLocation.getLatitude());
                             map.putExtra("lng",mLastLocation.getLongitude());
@@ -207,12 +213,12 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
                             Toast.makeText(ListOnline.this, "track lokasi "+mLastLocation.getLatitude()+"dan"+mLastLocation.getLongitude(), Toast.LENGTH_LONG).show();
 
                         }else{
-                            Intent map=new Intent(ListOnline.this,MapTracking.class);
+                            Intent map=new Intent(ListOnline.this,MapsCoba.class);
                             map.putExtra("email",model.getEmail());
                             map.putExtra("lat",mLastLocation.getLatitude());
                             map.putExtra("lng",mLastLocation.getLongitude());
                             startActivity(map);
-                            Toast.makeText(ListOnline.this, "diri sendiri"+mLastLocation.getLatitude()+"dan"+mLastLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ListOnline.this, "self"+mLastLocation.getLatitude()+"dan"+mLastLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -311,13 +317,14 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
     public void onLocationChanged(Location location) {
         mLastLocation=location;
         displayLocation();
+        startLocationUpdate();
+
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         displayLocation();
         startLocationUpdate();
-
     }
 
     private void startLocationUpdate() {
@@ -357,6 +364,7 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
     protected void onResume() {
         super.onResume();
         checkPlayServices();
+
     }
 
     @Override

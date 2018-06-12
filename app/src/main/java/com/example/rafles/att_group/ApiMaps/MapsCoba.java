@@ -1,32 +1,34 @@
 package com.example.rafles.att_group.ApiMaps;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rafles.att_group.R;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,25 +45,36 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
-public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
+public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
-        GoogleMap.OnMarkerClickListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+    //firebase
+    DatabaseReference onlineRef,currentUserRef,counterRef,locations,dbuserlist;
+    FirebaseRecyclerAdapter<User,ListOnlineViewHolder> adapter;
 
     private GoogleMap mMap;
     private String email;
-    DatabaseReference dbuserlist;
     Double lat,lng;
     Marker myMarker;
     TextView txt_search;
     private Context context;
 
+    //location
+    private static final int MY_PERMISSION_REQUEST_CODE=7171;
+    private static final int PLAY_SERVICES_RES_REQUEST=7172;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+
+    private static int UPDATE_INTERVAL=5000;
+    private static int FASTEST_INTERVAL=3000;
+    private static int DISTANCE=5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_tracking);
+        setContentView(R.layout.activity_maps_coba);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -78,13 +91,12 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
 
             Toast.makeText(this, "hai"+email+lat+"==="+lng, Toast.LENGTH_SHORT).show();
         }
-
         //for dialog searching
         txt_search=(TextView) findViewById(R.id.txt_search);
         txt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog customDialog = new Dialog(MapTracking.this);
+                final Dialog customDialog = new Dialog(MapsCoba.this);
                 // the setContentView() method is used to set the custom layout for the dialog
                 customDialog.setContentView(R.layout.dialog_search_maps);
 
@@ -99,7 +111,7 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
                 bt_submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MapTracking.this, "Searching data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsCoba.this, "Searching data", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -111,7 +123,33 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
                 loadLocationForThisUser(email);
             }
         });
-        
+        /////////for auto refresh
+        //firebase
+        locations=FirebaseDatabase.getInstance().getReference("Locations");
+        onlineRef= FirebaseDatabase.getInstance().getReference().child(".info/connected");
+        counterRef=FirebaseDatabase.getInstance().getReference("lastOnline");
+        currentUserRef=FirebaseDatabase.getInstance().getReference("lastOnline").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        if(ActivityCompat.checkSelfPermission(MapsCoba.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(MapsCoba.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            },MY_PERMISSION_REQUEST_CODE);
+            Toast.makeText(MapsCoba.this,"oke requested",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            if(checkPlayServices())
+            {
+                buildGoogleApiCLient();
+                createLocationRequest();
+                displayLocation();
+            }
+            Toast.makeText(MapsCoba.this,"Permission granted to user",Toast.LENGTH_LONG).show();
+        }
+
+//        setupSystem();
     }
 
     private void loadLocationForThisUser(String email) {
@@ -147,7 +185,7 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
                         mMap.addMarker(new MarkerOptions()
                                 .position(friendLocation)
                                 .title("- " + tracking.getEmail())
-                                .snippet("This is Driver")
+                                .snippet("Driver "+friendLocation)
 //                                    .snippet("distance"+ new DecimalFormat("#.#").format((currentUser.distanceTo(friendsLatLng)) / 1000+"KM"))
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 //                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),12.0f));
@@ -167,7 +205,7 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 12.0f));
-                Toast.makeText(MapTracking.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsCoba.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -214,39 +252,100 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
         mMap.clear();
         mMap.setTrafficEnabled(true);
         loadLocationForThisUser(email);
-
-//        LatLng lokasi = new LatLng(lat, lng);
-//        mMap.addMarker(new MarkerOptions().position(lokasi).title( "posisi"+lat+"dan"+lng));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 15.0f));
     }
 
 
-
-
+    //=================================TAMBAHAN=============================================
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent myIntent = new Intent(MapTracking.this, ListOnline.class);
-        startActivity(myIntent);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case MY_PERMISSION_REQUEST_CODE:
+            {
+                if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED)
+                {
+                    if(checkPlayServices())
+                    {
+                        buildGoogleApiCLient();
+                        createLocationRequest();
+                        displayLocation();
+                    }
+                }
+            }
+            break;
+        }
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        String title = marker.getTitle();
-        if ("User".equals(title)) {
-            Toast.makeText(this, "hai"+title, Toast.LENGTH_SHORT).show();
-        } else if ("Event".equals(title)) {
-            // do thing for events
-            Toast.makeText(this, "nooo", Toast.LENGTH_SHORT).show();
+    private void displayLocation() {
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        mLastLocation= LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(mLastLocation !=null)
+        {
+            //update data firebase
+            locations.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .setValue(new Tracking(FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            String.valueOf(mLastLocation.getLatitude()),
+                            String.valueOf(mLastLocation.getLongitude())));
+            Toast.makeText(this, "Save maps location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,"No",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    @SuppressLint("RestrictedApi")
+    private void createLocationRequest() {
+        mLocationRequest=new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setSmallestDisplacement(DISTANCE);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void buildGoogleApiCLient() {
+        mGoogleApiClient=new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        mGoogleApiClient.connect();
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode= GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if(resultCode != ConnectionResult.SUCCESS)
+        {
+            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode))
+            {
+                GooglePlayServicesUtil.getErrorDialog(resultCode,this,PLAY_SERVICES_RES_REQUEST).show();
+            } else
+            {
+                Toast.makeText(MapsCoba.this,"this device not support",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            return false;
         }
         return true;
     }
 
+    private void startLocationUpdate() {
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest, (com.google.android.gms.location.LocationListener) this);
+    }
+    //=================================TAMBAHAN=============================================
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        displayLocation();
+        startLocationUpdate();
     }
 
     @Override
@@ -261,6 +360,38 @@ public class MapTracking extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
+        mLastLocation=location;
+        displayLocation();
+        startLocationUpdate();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mGoogleApiClient != null)
+            mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        if(mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
+        if(adapter !=null)
+            adapter.stopListening();
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkPlayServices();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent myIntent = new Intent(MapsCoba.this, ListOnline.class);
+        startActivity(myIntent);
     }
 }
