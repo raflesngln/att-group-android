@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.rafles.att_group.MainActivity;
 import com.example.rafles.att_group.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -72,7 +74,7 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolBar);
         toolbar.setTitle("Tracking Maps");
         setSupportActionBar(toolbar);
-                //changing statusbar color
+        //changing statusbar color
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -108,6 +110,8 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
 
         setupSystem();
         updateList();
+
+
     }
 
     @Override
@@ -145,7 +149,8 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
                             FirebaseAuth.getInstance().getCurrentUser().getUid(),
                             String.valueOf(mLastLocation.getLatitude()),
                             String.valueOf(mLastLocation.getLongitude())));
-            Toast.makeText(this, "Save my new location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_SHORT).show();
+            Log.d("longitude ==>",mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude());
+//            Toast.makeText(this, "Save my new location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this,"No",Toast.LENGTH_SHORT).show();
         }
@@ -365,12 +370,31 @@ public class ListOnline extends AppCompatActivity implements GoogleApiClient.Con
         super.onResume();
         checkPlayServices();
 
+        setupSystem();
+        updateList();
+
+//        displayLocation();
+//        startLocationUpdate();
+
     }
 
+    boolean doubleBackToExitPressedOnce=false;
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
 
+            Intent myIntent = new Intent(ListOnline.this, MainActivity.class);
+            startActivity(myIntent);
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     public void showdialogexit(){

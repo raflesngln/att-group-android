@@ -3,9 +3,11 @@ package com.example.rafles.att_group
 import android.app.Activity
 import android.app.Fragment
 import android.app.FragmentManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var sharedPrefManager: SharedPrefManager? = null
     private val LOGIN_PERMISSION = 1000
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -70,6 +73,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .addToBackStack("fragment")
                 .commit()
 //        supportActionBar!!.setTitle("Fragment One")
+
+        // get last open Activity when open apps
+
+
     }
 
     fun showDialoExit() {

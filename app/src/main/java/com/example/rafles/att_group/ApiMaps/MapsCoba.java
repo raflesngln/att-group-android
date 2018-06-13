@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,7 +154,7 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
 //        setupSystem();
     }
 
-    private void loadLocationForThisUser(String email) {
+    private void loadLocationForThisUser(final String email) {
         Query user_location=dbuserlist.orderByKey();
         user_location.addValueEventListener(new ValueEventListener() {
             @Override
@@ -180,7 +182,8 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
 
                     //add other marker on the map,if not same on current user then created marker
                     LatLng lokasi_user=new LatLng(lat,lng);
-                    if (!lokasi_user.equals(friendLocation))
+                    if (!tracking.getEmail().equals(email))
+
                     {
                         mMap.addMarker(new MarkerOptions()
                                 .position(friendLocation)
@@ -204,7 +207,7 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
                         .snippet(FirebaseAuth.getInstance().getCurrentUser().getEmail())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 12.0f));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 18.0f));
                 Toast.makeText(MapsCoba.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
             }
 
@@ -246,12 +249,27 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear();
         mMap.setTrafficEnabled(true);
+        mMap.setBuildingsEnabled(true);
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         loadLocationForThisUser(email);
+
+        // for circle area current location,use style from folder raw/map.json
+        try{
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map));
+            if(!success){
+                Log.e("Maps", "Style Parsing failed");
+            }
+        }catch(Resources.NotFoundException ex){
+            Log.e("status","Can't find style. Error"+ex);
+        }
+
     }
 
 
@@ -269,6 +287,7 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
                         buildGoogleApiCLient();
                         createLocationRequest();
                         displayLocation();
+                        startLocationUpdate();
                     }
                 }
             }
@@ -291,7 +310,8 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
                             FirebaseAuth.getInstance().getCurrentUser().getUid(),
                             String.valueOf(mLastLocation.getLatitude()),
                             String.valueOf(mLastLocation.getLongitude())));
-            Toast.makeText(this, "Save maps location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_LONG).show();
+            Log.d("from maps",mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude());
+//            Toast.makeText(this, "Save maps location "+mLastLocation.getLatitude()+" dan "+ mLastLocation.getLongitude() , Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this,"No",Toast.LENGTH_SHORT).show();
         }
