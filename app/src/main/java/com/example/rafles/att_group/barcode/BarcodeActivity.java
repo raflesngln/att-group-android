@@ -1,5 +1,4 @@
 package com.example.rafles.att_group.barcode;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,82 +27,26 @@ import java.util.HashMap;
 
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
-
 public class BarcodeActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler{
     SharedPrefManager sharedPrefManager;
-//    final String createdbyuser = "";
     private ZBarScannerView mScannerView;
-
     public BarcodeActivity() {
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        setContentView(R.layout.activity_barcode);
-        mScannerView = new ZBarScannerView(this);    // Programmatically initialize the scanner view
+        //setContentView(R.layout.activity_barcode);
+        mScannerView = new ZBarScannerView(this); // initialize the scanner view
         setContentView(mScannerView);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
     public void onResume() {
         super.onResume();
-        mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        mScannerView.startCamera();          // Start camera on resume
+        mScannerView.setResultHandler(this); // Register as a handler for scan results.
+        mScannerView.startCamera();          // Start Barcode camera on resume
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mScannerView.stopCamera();           // Stop camera on pause
-    }
-
-    @Override
-    public void handleResult(Result rawResult) {
-        // Do something with the result here
-        //Log.v(TAG, rawResult.getContents()); // Prints scan results
-        //Log.v(TAG, rawResult.getBarcodeFormat().getName()); // Prints the scan format (qrcode, pdf417 etc.)
-        String kode=rawResult.getContents();
-        Toast.makeText(this, "Kode terbaca adalah "+kode, Toast.LENGTH_SHORT).show();
-
-        // If you would like to resume scanning, call this method below:
-        // mScannerView.resumeCameraPreview(this);
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(100);
-        confirmUpdate(kode);
-    }
-
-
-//    MY functio customs
-private void confirmUpdate(final String nomor) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle("Konfirmasi !");
-    builder.setMessage("Yakin Simpan Data ini ?"+nomor);
-    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-              /* Simpan data setelah klik oke */
-            //simpanData(nomor);
-            AddReject(nomor);
-            finish();
-            startActivity(getIntent());
-            dialog.dismiss();
-        }
-    });
-    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(BarcodeActivity.this, "Simpan Dibatalkan! "+nomor , Toast.LENGTH_LONG).show();
-            finish();
-            startActivity(getIntent());
-            dialog.dismiss();
-        }
-    });
-    AlertDialog alert = builder.create();
-    alert.show();
-}
-
-    //Dibawah ini merupakan perintah untuk menambahkan data di cdb cloud
+    //Insert data from scanner barcode to mysql database via API
     private void AddReject(final String nomor) {
         sharedPrefManager = new SharedPrefManager(this);
         Intent intent = getIntent();
@@ -112,7 +55,7 @@ private void confirmUpdate(final String nomor) {
         final String cn38 = intent.getStringExtra("cn38");
         final String con = nomor;
         final String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            final String createdbyuser=(sharedPrefManager.getSPNama());
+        final String createdbyuser=(sharedPrefManager.getSPNama());
 
         class AddReject extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;
@@ -167,6 +110,50 @@ private void confirmUpdate(final String nomor) {
         AddReject ae = new AddReject();
         ae.execute();
     }
+    @Override
+    public void handleResult(Result rawResult) {
+        // Do something with the result here
+        //Log.v(TAG, rawResult.getContents()); // Prints scan results
+        //Log.v(TAG, rawResult.getBarcodeFormat().getName()); // Prints the scan format (qrcode, pdf417 etc.)
+        String kode=rawResult.getContents();
+        Toast.makeText(this, "Kode terbaca adalah "+kode, Toast.LENGTH_SHORT).show();
+
+        // If you would like to resume scanning, call this method below:
+        // mScannerView.resumeCameraPreview(this);
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(100);
+        confirmUpdate(kode);
+    }
+
+
+//    MY functio customs
+private void confirmUpdate(final String nomor) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle("Konfirmasi !");
+    builder.setMessage("Yakin Simpan Data ini ?"+nomor);
+    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+              /* Simpan data setelah klik oke */
+            //simpanData(nomor);
+            AddReject(nomor);
+            finish();
+            startActivity(getIntent());
+            dialog.dismiss();
+        }
+    });
+    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Toast.makeText(BarcodeActivity.this, "Simpan Dibatalkan! "+nomor , Toast.LENGTH_LONG).show();
+            finish();
+            startActivity(getIntent());
+            dialog.dismiss();
+        }
+    });
+    AlertDialog alert = builder.create();
+    alert.show();
+}
+
 
     //Dibawah ini merupakan perintah untuk Menambahkan data (CREATE) di local
     private void simpanData(final String nomor){
@@ -231,6 +218,11 @@ private void confirmUpdate(final String nomor) {
         ae.execute();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mScannerView.stopCamera(); // Stop camera on pause
+    }
 
     @Override
     public boolean onSupportNavigateUp(){

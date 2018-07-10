@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,6 +49,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -69,9 +75,15 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
-    private static int UPDATE_INTERVAL=5000;
-    private static int FASTEST_INTERVAL=3000;
-    private static int DISTANCE=5;
+    //for refresh internal
+    private static int UPDATE_INTERVAL=15000;
+    private static int FASTEST_INTERVAL=10000;
+    private static int DISTANCE=10;
+    private static double zoomLevel=10;
+
+    //for get address longitude
+    Geocoder geocoder;
+    List<Address> addresses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +164,10 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         }
 
 //        setupSystem();
+        //address
+        getAddressDetail();
     }
+
 
     private void loadLocationForThisUser(final String email) {
         Query user_location=dbuserlist.orderByKey();
@@ -208,7 +223,8 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(lokasi));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((lokasi), 18.0f));
-                Toast.makeText(MapsCoba.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MapsCoba.this, "current location is" +lat+" and "+lng, Toast.LENGTH_SHORT).show();
+                Log.d("current location is => " ,lat+" and "+lng);
             }
 
             @Override
@@ -257,7 +273,7 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         mMap.setTrafficEnabled(true);
         mMap.setBuildingsEnabled(true);
         mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+//        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         loadLocationForThisUser(email);
 
         // for circle area current location,use style from folder raw/map.json
@@ -359,13 +375,32 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest, (com.google.android.gms.location.LocationListener) this);
     }
+
     //=================================TAMBAHAN=============================================
 
+    private void getAddressDetail() {
+        geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+            TextView txt_search=(TextView) findViewById(R.id.txt_search);
+            txt_search.setText(address);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         displayLocation();
         startLocationUpdate();
+        getAddressDetail();
     }
 
     @Override
@@ -383,7 +418,7 @@ public class MapsCoba extends FragmentActivity implements OnMapReadyCallback,
         mLastLocation=location;
         displayLocation();
         startLocationUpdate();
-
+        getAddressDetail();
     }
 
     @Override

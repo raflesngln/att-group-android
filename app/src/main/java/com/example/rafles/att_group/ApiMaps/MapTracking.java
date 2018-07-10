@@ -1,5 +1,4 @@
 package com.example.rafles.att_group.ApiMaps;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
